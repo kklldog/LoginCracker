@@ -48,7 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HttpFactory.cs" />
-    <Compile Include="HttpFileReader.cs" />
+    <Compile Include="RequestFileReader.cs" />
     <Compile Include="HttpTask.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

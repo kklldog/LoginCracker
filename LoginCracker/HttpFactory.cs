@@ -6,7 +6,7 @@ namespace LoginCracker
 {
     internal class HttpFactory
     {
-        public static HttpWebRequest CreateHttp(HttpFileReader httpFileReader, string userName, string password)
+        public static HttpWebRequest CreateHttp(RequestFileReader httpFileReader, string userName, string password)
         {
             try
             {

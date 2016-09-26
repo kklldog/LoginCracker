@@ -4,9 +4,9 @@ using System.IO;
 
 namespace LoginCracker
 {
-    internal class HttpFileReader
+    internal class RequestFileReader
     {
-        public HttpFileReader(string filePath)
+        public RequestFileReader(string filePath)
         {
             FilePath = filePath;
             var line = "";

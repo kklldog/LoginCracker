@@ -31,7 +31,7 @@ namespace LoginCracker
                 reqFilePath = Console.ReadLine();
             }
 
-            var httpFileReader = new HttpFileReader(reqFilePath);
+            var httpFileReader = new RequestFileReader(reqFilePath);
             var successHandler = SuccessHandlerConfig.Handler;
 
             using (var nameReader = new StreamReader(namePath))
