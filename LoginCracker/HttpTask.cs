@@ -10,7 +10,7 @@ namespace LoginCracker
 {
     internal class HttpTask
     {
-        private static readonly CancellationTokenSource cancellationToken = new CancellationTokenSource();
+        public static readonly CancellationTokenSource CancellationToken = new CancellationTokenSource();
 
         public static Task<string> CreateTask(HttpWebRequest request, ISuccessHandler successHandler, string userName,
             string password)
@@ -19,7 +19,7 @@ namespace LoginCracker
             {
                 try
                 {
-                    using (var response = (HttpWebResponse) request.GetResponse())
+                    using (var response = (HttpWebResponse)request.GetResponse())
                     {
                         var responseStream = response.GetResponseStream();
                         if (responseStream != null)
@@ -29,9 +29,18 @@ namespace LoginCracker
                                 var content = reader.ReadToEnd();
                                 if (successHandler.HandlerStatusCode(response.StatusCode, content))
                                 {
-                                    cancellationToken.Cancel();
-
                                     Console.WriteLine(content);
+                                    var root = AppDomain.CurrentDomain.BaseDirectory;
+                                    var dir = string.Format("{0}/logs/{1}", root, DateTime.Now.ToString("yyyyMMdd"));
+                                    if (!Directory.Exists(dir))
+                                    {
+                                        Directory.CreateDirectory(dir);
+                                    }
+
+                                    string logPath = string.Format("{0}/{1}.txt",
+                                        dir,
+                                        userName + "-" + password);
+                                    File.WriteAllText(logPath, "/");
                                     return string.Format("SUCCESS!!!! {0} {1} {2}", response.StatusCode, userName,
                                         password);
                                 }
@@ -43,7 +52,7 @@ namespace LoginCracker
                 }
                 catch (WebException ex)
                 {
-                    using (var response = (HttpWebResponse) ex.Response)
+                    using (var response = (HttpWebResponse)ex.Response)
                     {
                         var responseStream = response.GetResponseStream();
                         if (responseStream != null)
@@ -59,7 +68,7 @@ namespace LoginCracker
                 }
 
                 return "";
-            }, cancellationToken.Token);
+            }, CancellationToken.Token);
 
             return task;
         }

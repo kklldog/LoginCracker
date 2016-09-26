@@ -54,30 +54,35 @@ namespace LoginCracker
                             Console.WriteLine("try to test {0} {1}", userName, password);
 
                             var httpReq = HttpFactory.CreateHttp(httpFileReader, userName, password);
-                            var task = HttpTask.CreateTask(httpReq, successHandler, userName, password);
-                            task.ContinueWith(
-                                r =>
-                                {
-                                    if (!string.IsNullOrEmpty(r.Result))
-                                    {
-                                        Console.WriteLine(r.Result);
-                                    }
-                                });
-                            tasks.Add(task);
-                            count++;
-                            if (count == 10)
+                            if (httpReq != null)
                             {
-                                try
+                                var task = HttpTask.CreateTask(httpReq, successHandler, userName, password);
+                                task.ContinueWith(
+                                    r =>
+                                    {
+                                        if (!string.IsNullOrEmpty(r.Result))
+                                        {
+                                            Console.WriteLine(r.Result);
+                                            HttpTask.CancellationToken.Cancel();
+                                        }
+                                    });
+                                tasks.Add(task);
+                                count++;
+                                if (count == 10)
                                 {
-                                    Task.WaitAll(tasks.ToArray());
-                                    tasks = new ConcurrentBag<Task<string>>();
-                                    count = 0;
-                                }
-                                catch (AggregateException exc)
-                                {
-                                    break;
+                                    try
+                                    {
+                                        Task.WaitAll(tasks.ToArray());
+                                        tasks = new ConcurrentBag<Task<string>>();
+                                        count = 0;
+                                    }
+                                    catch (AggregateException exc)
+                                    {
+                                        break;
+                                    }
                                 }
                             }
+
                         }
                     }
                 }
