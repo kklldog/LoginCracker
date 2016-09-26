@@ -39,13 +39,20 @@ namespace LoginCracker
                 var userName = "";
                 var password = "";
                 var count = 0;
+                var userFind = false;
                 ConcurrentBag<Task<string>> tasks = null;
                 while ((userName = nameReader.ReadLine()) != null)
                 {
+                    userFind = false;
                     using (var passReader = new StreamReader(passPath))
                     {
                         while ((password = passReader.ReadLine()) != null)
                         {
+                            if (userFind)
+                            {
+                                break;
+                            }
+
                             if (count == 0)
                             {
                                 tasks = new ConcurrentBag<Task<string>>();
@@ -60,12 +67,23 @@ namespace LoginCracker
                                 task.ContinueWith(
                                     r =>
                                     {
-                                        if (!string.IsNullOrEmpty(r.Result))
+                                        if (!HttpTask.CancellationToken.IsCancellationRequested)
                                         {
-                                            Console.WriteLine(r.Result);
-                                            HttpTask.CancellationToken.Cancel();
+                                            if (!string.IsNullOrEmpty(r.Result))
+                                            {
+                                                Console.ForegroundColor = ConsoleColor.Yellow;
+                                                Console.WriteLine(r.Result);
+                                                Console.ResetColor();
+                                                userFind = true;
+                                                if (successHandler.IsStopAllTasksWhenFindOne)
+                                                {
+                                                    HttpTask.CancellationToken.Cancel();
+                                                }
+                                                
+                                            }
                                         }
                                     });
+
                                 tasks.Add(task);
                                 count++;
                                 if (count == 10)

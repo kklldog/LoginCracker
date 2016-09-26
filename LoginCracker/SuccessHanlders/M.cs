@@ -22,5 +22,10 @@ namespace LoginCracker.SuccessHanlders
                 };
             }
         }
+
+        public bool IsStopAllTasksWhenFindOne
+        {
+            get { return false; }
+        }
     }
 }
