@@ -27,7 +27,7 @@ namespace LoginCracker
                             using (var reader = new StreamReader(responseStream, Encoding.UTF8))
                             {
                                 var content = reader.ReadToEnd();
-                                if (successHandler.HandlerStatusCode(response.StatusCode, content))
+                                if (successHandler.HandlerSuccessResponse(response.StatusCode, content))
                                 {
                                     Console.WriteLine(content);
                                     var root = AppDomain.CurrentDomain.BaseDirectory;

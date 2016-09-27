@@ -6,7 +6,7 @@ namespace LoginCracker.SuccessHanlders
 {
     public class MHandler : ISuccessHandler
     {
-        public Func<HttpStatusCode, string, bool> HandlerStatusCode
+        public Func<HttpStatusCode, string, bool> HandlerSuccessResponse
         {
             get
             {

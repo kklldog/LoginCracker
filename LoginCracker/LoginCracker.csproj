@@ -55,7 +55,7 @@
     <Compile Include="SuccessHandlerConfig.cs" />
     <Compile Include="SuccessHanlders\DefaultHandler.cs" />
     <Compile Include="SuccessHanlders\ISuccessHandler.cs" />
-    <Compile Include="SuccessHanlders\M.cs" />
+    <Compile Include="SuccessHanlders\MHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
